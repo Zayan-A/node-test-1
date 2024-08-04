@@ -6,8 +6,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 698355729228.dkr.ecr.us-east-2.amazonaws.com
-      - REPOSITORY_URI=698355729228.dkr.ecr.us-east-2.amazonaws.com/ali
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654629562.dkr.ecr.us-east-1.amazonaws.com
+      - REPOSITORY_URI=654654629562.dkr.ecr.us-east-1.amazonaws.com/docker-mastery
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
@@ -20,10 +20,10 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push 654654629562.dkr.ecr.us-east-1.amazonaws.com/docker-mastery:latest
+      - docker push 654654629562.dkr.ecr.us-east-1.amazonaws.com/docker-mastery:v1
       - echo Writing image definitions file...
-      - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"nodeapp","imageUri":"%s"}]' 654654629562.dkr.ecr.us-east-1.amazonaws.com/docker-mastery:v1 > imagedefinitions.json
       - cat imagedefinitions.json 
 artifacts:
     files: imagedefinitions.json
